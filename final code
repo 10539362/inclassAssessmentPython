@@ -1,0 +1,45 @@
+class basket:
+
+    def __init__(self, line_items, discount_code):
+        self.items_list = line_items
+        self.couponcode = discount_code
+
+
+class shop:
+    def __init__(self, p_list, d_list):
+        self.price_list = p_list
+        self.discount_list = d_list
+
+    def discount_basket_price(self, basket_cost, basket):
+        if (basket.couponcode in self.discount_list):
+            print("discount")
+            return basket_cost - (self.discount_list[basket.couponcode])
+        return basket_cost
+
+    def basket_price_calcualtion(self, basket):
+        print(basket.items_list)
+        basket_cost = 0
+        item_cost = 0
+        print(self.price_list)
+        for i in basket.items_list:
+            item_cost = self.price_list[i] * basket.items_list[i]
+            basket_cost += item_cost
+        return self.discount_basket_price(basket_cost, basket)
+
+    def order_baskets_by_price(self, basket_list):
+        b_p_list = {}
+        for basket in basket_list:
+            b_p_list[basket] = self.basket_price_calcualtion(basket)
+        return (b_p_list)
+
+
+
+# price dictionary as item : price in euros
+# discount list with coupon codes in list
+s = shop({"eggs": 10, "rice": 20, "bread": 30}, {"eggs2": 10, "rice1": 20, "bread3": 30})
+b1 = basket({"eggs": 3, "rice": 2}, "eggs2")
+b2 = basket({"eggs": 5, "rice": 3}, "eggs2")
+b3 = basket({"eggs": 6, "rice": 3}, "rice1")
+b4 = basket({"eggs": 5, "rice": 1}, "rice1")
+basket_prices = s.order_baskets_by_price([b1, b2, b3, b4])
+print(basket_prices)
